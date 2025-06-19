@@ -1,0 +1,3 @@
+Django
+pyttsx3
+pydub
