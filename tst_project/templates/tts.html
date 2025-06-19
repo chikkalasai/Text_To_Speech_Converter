@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Text to Speech Converter</h2>
+    
+    <form method="POST">
+        {% csrf_token %}
+        
+        <textarea name="text" rows="5" placeholder="Enter text here..." required></textarea>
+
+        <label for="voice_id">Choose Voice:</label>
+        <select name="voice_id" id="voice_id" required>
+            {% for voice in voices %}
+                <option value="{{ voice.id }}">{{ voice.name }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Convert</button>
+    </form>
+
+    {% if audio_file %}
+        <h3>Audio Output:</h3>
+
+        <p><strong>File Name:</strong> {{ audio_file|cut:"/media/" }}</p>
+
+        <audio controls>
+            <source src="{{ audio_file }}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <br>
+        <a href="{{ audio_file }}" download>Download MP3</a>
+    {% endif %}
+{% endblock %}

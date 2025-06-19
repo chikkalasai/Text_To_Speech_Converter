@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card shadow p-4">
+    <h2 class="mb-4 text-center text-primary">🗣️ Text to Speech Converter</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">Enter Text:</label>
+            <textarea name="text" class="form-control" rows="5" placeholder="Enter text here..." required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Choose Voice:</label>
+            <select name="voice_id" class="form-select" required>
+                {% for voice in voices %}
+                    <option value="{{ voice.id }}">{{ voice.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Convert</button>
+    </form>
+
+    {% if audio_file %}
+        <div class="mt-4">
+            <h4 class="text-success">🎧 Audio Output:</h4>
+            <audio controls class="w-100 mt-2">
+                <source src="{{ audio_file }}" type="audio/mpeg">
+            </audio>
+            <a href="{{ audio_file }}" class="btn btn-success mt-3 w-100" download>⬇️ Download MP3</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
